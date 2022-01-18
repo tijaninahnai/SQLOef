@@ -1,0 +1,121 @@
+-- 5/5 dinsdag
+
+-- ppt 
+
+-- Insert
+Insert into medewerkers(sofi_nr, achternaam, voornaam, salaris, afd_nr)
+values ('999123456', 'Sas', 'Van', (select avg(salaris) from medewerkers), 1);
+
+select * from medewerkers;
+
+-- Update
+update medewerkers
+set salaris = (select avg(salaris) from medewerkers where afd_nr=3)
+where sofi_nr = '999222222';
+
+select * from medewerkers where sofi_nr='999222222';
+
+update medewerkers
+set salaris = salaris * 1.10
+where afd_nr = (select afd_nr from afdelingen where lower(afd_naam)='productie');
+
+rollback;
+select salaris from medewerkers where afd_nr=7;
+
+update medewerkers m
+set salaris = (select avg(salaris) from medewerkers
+               where afd_nr=m.afd_nr);
+               
+update medewerkers m
+set salaris = salaris * 1.10
+where salaris < (select avg(salaris) from medewerkers
+                 where afd_nr=m.afd_nr);
+
+select voornaam, salaris from medewerkers m
+where salaris < (select avg(salaris) from medewerkers
+                 where afd_nr=m.afd_nr); -- 25 31 33 27 35
+                 
+--Delete
+delete from medewerkers
+where salaris < (select avg(salaris) from medewerkers where afd_nr=3);
+
+delete from medewerkers m
+where salaris < (select avg(salaris) from medewerkers
+                 where afd_nr=m.afd_nr);
+              
+from medewerkers where afd_nr=20
+-- Oplossing Deel 1                 
+INSERT INTO medewerkers(sofi_nr, achternaam, voornaam)
+VALUES('999999999','Janssens','Jan');
+
+INSERT INTO afdelingen(afd_nr,afd_naam, mgr_sofi_nr)
+VALUES(8,'Human Resources','999999999');
+
+UPDATE medewerkers
+SET afd_nr=8
+Where sofi_nr='999999999';
+
+INSERT INTO locaties
+VALUES('Antwerpen');
+
+INSERT INTO projecten
+VALUES(40,'Opleidingen','Antwerpen&',8);
+
+UPDATE medewerkers
+SET afd_nr=8, mgr_sofi_nr='999999999'
+WHERE sofi_nr ='999333333';
+
+UPDATE medewerkers
+SET afd_nr=8, mgr_sofi_nr='999333333'
+WHERE sofi_nr ='999111111';
+
+INSERT INTO opdrachten
+VALUES('999333333',40,20);
+
+INSERT INTO opdrachten
+VALUES('999111111',40,10);
+
+COMMIT;
+
+													           update medewerkers set salarais = salaris*1.05
+														where sofi_nr =(select sofi_nr
+														from opdrachten
+where 														afd_nr=20 and uren >=10      
+-- Oefeningen op DML deel 2 (2,3,4)
+--2
+update medewerkers
+set salaris = salaris * 1.05
+where sofi_nr = (select sofi_nr 
+                 from opdrachten 
+                 where proj_nr=20 and uren >=10);
+
+update medewerkers m
+set salaris=(salaris + (12*50)
+where sofi_nr =(select sofi_nr
+from medewerkers where srelatie in ('zoon','dochter')
+
+--3 
+update medewerkers m
+set salaris = salaris + (12*50)*(select count(*) 
+                                from gezinsleden
+                                where lower(relatie)!='partner' 
+                                and sofi_nr = m.sofi_nr)
+where sofi_nr in (select sofi_nr 
+                from gezinsleden
+                where lower(relatie) in ('dochter', 'zoon')
+                group by sofi_nr);
+
+
+--4 
+insert into projecten(proj_nr, proj_naam, locatie, afd_nr) 
+values (1+(select max(proj_nr) from projecten),
+        'Saneringen', 
+        'Maastrich',
+        (select afd_nr 
+        from projecten
+        group by afd_nr
+        having count(*) in (
+           select min(count(*)) from projecten
+           group by afd_nr)));
+        
+-- error omdat ik 2 afd_nr heb die minst projecten ondersteund. maar geen probleem.

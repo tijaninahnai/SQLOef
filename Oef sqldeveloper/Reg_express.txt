@@ -1,0 +1,96 @@
++    | 1 of meer keer |
+*    | 0 of meer keer |
+?    | 0 of 1 keer    |
+{n,m}| n tot m keer   |
+----------------------|
+SELECT achternaam				jokers: .  (één willekeurig teken) 
+FROM medewerkers
+WHERE REGEXP_LIKE(achternaam,'B.r'); --> (B)o(r)doloi
+-------------------------------------------------------------------------------------------
+ELECT achternaam				jokers: […] een teken uit een lijst
+FROM medewerkers
+WHERE REGEXP_LIKE
+[ae0-9iou]  (Klinkerrs en getalen)
+[a-i]	    (	  interval	 )
+(achternaam, '[imu]'); --> Bordolo(i)
+			   Joche(m)s
+			   Z(u)iderweg 
+------------------------------------------------------------------------------------------
+SELECT provincie				jokers: [^…] teken niet uit een lijst
+FROM medewerkers
+WHERE REGEXP_LIKE(provincie,'[^A-P]'); --> ZH UT GR 
+-------------------------------------------------------------------------------------------
+						herhaling: + (één of meer tekens)
+SELECT achternaam
+FROM medewerkers
+WHERE REGEXP_LIKE(achternaam,'o+'); --> B(o)rd(o)l(o)i
+-------------------------------------------------------------------------------------------
+SELECT achternaam				herhaling: * (nul of meer tekens)
+FROM medewerkers
+WHERE REGEXP_LIKEE(adres,'en*straat'); --> Ze(estraat) 14
+					   Eik(enstraat)
+-------------------------------------------------------------------------------------------
+SELECT achternaam				herhaling: ? (nul of één teken)
+FROM medewerkers
+WHERE REGEXP_LIKE(achternaam,'rw?e'); --> Zuide(rwe)g
+					  P(re)gers
+-------------------------------------------------------------------------------------------
+SELECT achternaam				herhaling : {m} (exact aantal keer)
+FROM medewerkers
+WHERE REGEXP_LIKEE(achternaam,'o{2}'); --> Amelsv(oo)rt
+					   J(oo)sten 
+-------------------------------------------------------------------------------------------
+						combineren: | OF
+-------------------------------------------------------------------------------------------
+						groeperen: () subexpression
+-------------------------------------------------------------------------------------------
+						Metakarakters: () subexpression
+SELECT achternaam
+FROM medewerkers
+WHERE REGEXP_LIKE(achternaam, '([aeiou][^aeiou]){2}'); --> Zu(ider)weg
+							   Mu(iden)
+	(Klinker met medeklinker 2 x vlak na elkaar)	   Pr(eger)s
+-------------------------------------------------------------------------------------------
+						Geen metakarakter: \ escape
+[0-9]\.[0-9] zoekt naar twee cijfers gescheiden door een punt.
+(Het punt wordt dus niet alsmetakarakter gezien)
+
+					-->1.5 of 3.7
+-------------------------------------------------------------------------------------------
+						ankers: ^ begin
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+						ankers: $ einde
+------------------------------------------------------------------------------------------
+						VOORBEELDEN
+
+ECT achternaam
+FROM test
+WHERE REGEXP_LIKE(achternaam,'a{2}'); --> Enkel achternamen met 2 'aa'
+------------------------------------------------------------------------------------------
+SELECT achternaam
+FROM test
+WHERE REGEXP_LIKE(achternaam,'Goov(aa|ae)rts','i'); --> zowel achtertnamen met 'aa' als met 'ae' 
+						i => kleine letter
+						c => grote letter
+------------------------------------------------------------------------------------------
+					REGEXP_SUBSTR
+Zoek de eerste klinker in de achternaam
+SELECT achternaam,
+regexp_substr(achternaam,'[aeiou]') "eerste klinker"	--> Eerste klinker in achternaam
+REGEXP_SUBSTR(last_name,'[aeiou]',1,2,'i')"tweede klinker" --> Eerste klinker in achternaam van positie 1
+FROM medewerkers;
+						
+------------------------------------------------------------------------------------------
+					REGEXP_INSTR
+Zoek de positie van de eerste en of er combinatiE
+SELECT achternaam,
+regexp_instr(achternaam,'en|er') " " --> Muiden 5 (positie 5
+REGEXP_INSTR(achternaam,'aa|ae',1,1,0,'i') " " Vanaf positie 1/ aantal voorkomen/Beginpositie
+FROM medewerkers;			
+
+------------------------------------------------------------------------------------------
+					REGEXP_REPLACE
+LECT adres,regexp_replace(adres, 'o','opo') " "		--> Alle adressen met o wordt vervangen door opo
+SELECT adres,regexp_replace(adres,'o','opo',1,1,'i') " " --> 1x vervangen
+FROM medewerkers;		

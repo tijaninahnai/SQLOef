@@ -1,0 +1,86 @@
+--1 Geef een overzicht van medewerkers die in hun achternaam een ‘a’
+	of ‘u’ hebben.
+
+SELECT achternaam MDW_ACHTERNAAM
+
+FROM medewerkers
+
+WHERE REGEXP_LIKE(lower(achternaam),('a|u'),'i');
+----------------------------------------------------------------------------------------------
+--2 Toon in een rt de achternamen van alle medewerkers waarin je de 2e
+ 	occurrence van de letter ‘o’ of de letter ‘a’ vervangt door een
+	letter ‘e’ (case insensitive)
+
+SELECT achternaam,regexp_replace(achternaam,'o|a','e',2,1,'i') " "
+
+FROM medewerkers;	
+----------------------------------------------------------------------------------------------
+--3 Toon alle projectnamen waarvoor tussen 2 klinkers één niet-klinker
+	staat. 
+
+SELECT proj_naam
+
+FROM projecten
+
+WHERE REGEXP_LIKE(proj_naam, '([aeiou][^aeiou]){2}');
+----------------------------------------------------------------------------------------------
+--4 Toon alle projectnamen waarvoor tussen de 1e en de 2e klinker één
+niet-klinker staat. 
+									   .-.
+select proj_naam
+							  (o.o)
+from projecten								   |=|
+where regexp_instr(proj_naam,'[aeiou]',1,1,0,'i') +2			  __|__
+	=
+regexp_instr(proj_naam,'[aeiou]',1,2,0,'i');			//.=|=.\\
+ 			 					       // .=|=. \\
+   						  		       \\ .=|=. //
+  								 	\\(_=_)//
+ 									 (:| |:)
+  									  || ||
+  				 					  () ()
+  					  				  || ||
+    									  || ||			
+    									 ==' '==
+-----------------------------------------------------------------------------------------------
+--5a Toon de tweede klinker van alle projectnamen (case
+insensitive)
+
+select regexp_substr(proj_naam,'[aeioi]',1,2,'i') "Tweede klinker "
+
+from projecten;
+
+--5b Toon alle projectnamen waarvoor de eerste 2 klinkers die je
+tegenkomt dezelfde zijn.(bv de eerste 2 klinkers zijn ‘a’).
+
+select proj_naam
+from projecten
+where regexp_substr(proj_naam, '[aeiou]',1,1,'i') = 
+regexp_substr(proj_naam,'[aeiou]',1,2,'i'); 
+
+      .-.
+     (o.o)
+      |=|
+     __|__
+   //.=|=.\\
+  // .=|=. \\
+  \\ .=|=. //
+   \\(_=_)//
+    (:| |:)
+     || ||
+     () ()
+     || ||
+     || ||
+    ==' '==
+-------------------------------------------------------------------------------------------------
+--oef 6 
+--EXTRA: Geef een output van de adresssen van de medewerkers
+--waarbij huisnummers en strnumer
+--staatnaam gescheiden zijn
+--Sorteer de tabel op huis
+select adres from medewerkers;
+select adres, regexp_substr(adres,'[a-z]+',1,1,'i')"straat", --(+ = 1 of meerder keren)
+regexp_substr(adres,'[0-9]+'1,1,'i') "nr"
+from medewerkers;
+
+

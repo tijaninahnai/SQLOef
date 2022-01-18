@@ -1,0 +1,47 @@
+					GEWONE JOINS = equi join on
+1.	Vermeld de 2 tabellen die je voor de samenstelling van de
+	resultatentabel nodig hebt in de FROM JOIN optie
+2. 	Geef achter de ON optie tussen de haakjes weer hoe de
+	rijen van de ene tabel moeten gelinkt worden aan de rijen
+	van de andere tabel.
+		Aan welke voorwaarde moet een rij uit MEDEWERKERS voldoen om
+		gelinkt te worden aan de juiste rij uit AFDELINGEN
+3. 	Voer select list uit
+	gewone join = equi join on
+
+SELECT sofi_nr,achternaam,voornaam, medewerkers.afd_nr,
+afd_naam
+FROM medewerkers
+JOIN afdelingen ON(medewerkers.afd_nr=afdelingen.afd_nr);
+--> afd.nr zit niet in de tabel medewerkers maar in afdelingen
+ dus ON(medewerkers.afd_nr=afdelingen.afd_nr); maak je van afd_nr 
+een attribuut voor medewerkers 
+-----------------------------------------------------------------------------
+SELECT sofi_nr,achternaam,voornaam, medewerkers.afd_nr,afd_naam
+FROM medewerkers JOIN afdelingen
+ON(medewerkers.afd_nr=afdelingen.afd_nr);
+
+Met tabelaliassen:
+SELECT sofi_nr,achternaam,voornaam, m.afd_nr, afd_naam
+FROM medewerkers m
+JOIN afdelingen a ON(m.afd_nr=a.afd_nr);
+
+Met using: enkel te gebruiken bij identieke attribuutnamen!
+SELECT sofi_nr,achternaam,voornaam, afd_nr, afd_naam
+FROM medewerkers
+JOIN afdelingen USING(afd_nr);
+--------------------------------------------------------------------
+SELECT sofi_nr, achternaam,voornaam, medewerkers.afd_nr,
+afd_naam
+FROM medewerkers, afdelingen
+WHERE medewerkers.afd_nr=afdelingen.afd_nr;
+--------------------------------------------------------------------
+SELECT sofi_nr,achternaam,voornaam, m.afd_nr, afd_naam
+FROM medewerkers m
+JOIN afdelingen a ON(m.afd_nr=a.afd_nr)
+WHERE UPPER(geslacht)='V'; --> vrouwelijke werknemers op een afdeling
+---------------------------------------------------------------------
+SELECT sofi_nr,achternaam,voornaam,afd_nr,afd_naam
+FROM medewerkers
+JOIN afdelingen using (afd_nr)
+WHERE UPPER(afd_naam)='PRODUCTIE';

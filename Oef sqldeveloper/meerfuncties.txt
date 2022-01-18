@@ -1,0 +1,312 @@
+			MEER FUNCTIES:
+			
+		    LENGTH: 
+LENGTH: Telt aantal karakters in een karakterstring.
+select voornaam ||' '|| achternaam naam,
+	length(voornaam||' '||achternaam) lengte_naam
+from medewerkers;
+-----------------------------------------------------------------------------
+Select Length('Tijani Nahnai') naamlengte
+from dual; 
+
+			NAAMLENGTE = 13 -> spatie mee gerekend
+*********************************************************************************
+		     SUBSTR:
+SUBSTR: Om deelstring uit een string selecteren
+-m=Waar beginnen
+-n=Hoeveel karakters vanaf 'm'
+SELECT substr(achternaam,1,4), achternaam
+FROM medewerkers;
+				Nahn	Nahnai
+-----------------------------------------------------------------------------
+SELECT substr(achternaam,5), achternaam
+FROM medewerkers;
+Geeft vanaf positie 5 tot het einde van de string
+*********************************************************************************
+		   INSTR:
+INSTR: Geeft de positie weer waar een karakter zich in een string voordoet:
+Op welke positie komt in de achternaam de letter ‘o’ het eerst voor.
+Je moet beginnen zoeken vanaf de eerste positie van de
+karakterstring.
+
+SELECT instr(achternaam,'o',1,1), achternaam
+FROM medewerkers;
+			2 Bordoloi 
+			7 Amelsvoort
+*********************************************************************************
+			CONCAT:
+CONCAT:Voegt 2 karakterstrings,kolommen,expressies samen tot 1
+grotere karakterstring. Je kunt ook een functie nestelen als je 
+bijvoorbeeld 2 soorten attribuuttypes wilt gebruiken 
+SELECT concat( 2*3,' is het product van 2 en 3')
+"voorbeeld1 CONCAT"
+FROM dual;
+		6 is het product van 2 en 3
+-----------------------------------------------------------------------------
+SELECT concat( 'vandaag is ',SYSDATE)
+"voorbeeld2 CONCAT"
+FROM dual;
+			Vandaag is het 20/05/19
+-----------------------------------------------------------------------------
+ termen samenvoegen => nestelen
+SELECT concat ('term1 ',
+concat('term2 ','term3 ')) "naam van concat"
+FROM dual;
+		term1 term2 term3
+*********************************************************************************
+			LPAD/RPAD:
+-LPAD=Je vult de plaats in een text string op vanaf LINKS met een gekoze karakter 
+-RPAD=Je vult de plaats in een text string op vanaf RECHTS met een gekoze karakter
+ SELECT Lpad(achternaam,25,'?') achternaam
+ SELECT Rpad(achternaam,25,'?') achternaam
+FROM medewerkers;
+		???????????????????Nahnai
+		Nahnai???????????????????	
+-----------------------------------------------------------------------------
+SELECT lpad(1000+200.55,14,'*') getal
+FROM dual;
+(7*)1200,55
+SELECT rpad(1000+200.55,14,'*') getal
+FROM dual;
+1200,55(7*)
+SELECT lpad(SYSDATE,14,'%$') datum
+FROM dual;
+%$%$%20/05/19 --> WORDT ALS APART TEKEN GEZIEN
+			TRIM:
+TRIM:Verwijderd karakters aan het begin of einde van een string:
+-Trailing= verwijderd vanachter
+-Leading= verwijderd vanvoor
+-Both= beide
+SELECT trim(TRAILING/BOTH/LEADING 'a' FROM 'aaaaaVandervekenaaaa')
+resultaat
+FROM dual;
+		-aaaaaVanderveken
+		-Vandervekenaaaa
+		-Vanderveken
+SELECT '*'||trim(' Vanderveken ')||'*' resultaat
+FROM dual;
+		*Vaderveken*
+*********************************************************************************
+			ROUND:
+ROUND=Rond af
+SELECT round(15251.675) FROM dual;  --->15251.675
+
+SELECT round(15251.675,1) FROM dual; --->15251.7
+
+SELECT round(15256.675,-1) FROM dual; --->15260
+*********************************************************************************
+			TRUNC:
+TRUNC: Afkappen zonder af te ronden:
+SELECT trunc(15251.675) FROM dual;   --->15251
+
+SELECT trunc(15251.675,1) FROM dual;  --->15251,6
+
+ 	SELECT trunc(15251.675,-1) FROM dual;   --->15250
+*********************************************************************************
+				MOD:
+MOD:Delen met resten
+SELECT mod(6,3) rest
+FROM dual;              --->0
+
+SELECT mod(5,3) rest
+FROM dual;		--->2
+
+SELECT mod(7,35) rest
+FROM dual;		--->7
+
+SELECT mod(5.2,3) rest
+FROM dual;		--->2.2
+*********************************************************************************
+			Datumfuncties:
+FORMATEN: 
+-SELECT SYSDATE FROM dual; 
+-ALTER SESSION SET NLS_DATE_FORMAT='dd-mm-yyyy';
+	SELECT SYSDATE FROM dual;
+-SELECT value
+	FROM nls_session_parameters
+	WHERE parameter = 'NLS_DATE_FORMAT'; ---> Geeft formaat weer dat in gebruik is
+-ALTER SESSION SET NLS_DATE_FORMAT='DD-MON-YYYY';
+	ALTER SESSION SET NLS_LANGUAGE='FRENCH';
+	SELECT SYSDATE
+	FROM dual;		--->Verander adhv land
+-SELECT (SYSDATE-geb_datum)/365 leeftijd
+	FROM medewerkers;
+				--->Geb_datum in dagen
+-SELECT round/trunc((SYSDATE-geb_datum)/365) leeftijd
+	FROM medewerkers;
+----------------------------------------------------------------------------------
+		MONTHS_BETWEEN:
+MONTHS_BETWEEN: Geeft de het aantal maanden tussen 2 datums
+-SELECT trunc(months_between(SYSDATE,geb_datum)/12 leeftijd
+	FROM medewerkers;			 --> GEEFT LEEFTIJD IN JAREN
+-SELECT (SYSDATE-geb_datum) YEAR(3) TO MONTH leeftijd
+	FROM medewerkers;			---> GEEFT jaren en maanden		
+------------------------------------------------------------------------------
+			ADD_MONTHS:
+ADD_MONTHS: Om extra maanden toe te voeegen
+
+-SELECT mgr_start_datum,
+	add_months(mgr_start_datum,-4) "4 maanden eerder"
+	FROM afdelingen;			--->Zet de startdatum 4 maanden vroeger
+-SELECT mgr_start_datum,
+mgr_start_datum
++ INTERVAL '0-4' YEAR TO MONTH "4 maanden later"
+
+FROM afdelingen;
+			--> Geeft het interval weer tussen het begin en 4 maanden later
+--------------------------------------------------------------------------------
+				NEXT_DAY:
+SELECT next_day(SYSDATE,'zo') voorbeeld
+FROM dual;
+		---> Laat de volgende dag zien
+---------------------------------------------------------------------------------
+				LAST_DAY:
+-SELECT last_day('11-NOV-2014') laatste_dag
+	FROM dual; 		
+---------------------------------------------------------------------------------
+-SELECT round(SYSDATE,'CC','Q','YYYY','MM') 
+	FROM dual;		
+---> CC Afronden op op 1ste dag van huidige/volgende eeuw
+---> Q  Afronde naar huidige/volgende kwartaal		
+---> YYYY Afronden naar huidig/volgend jaar
+---> MM Afronden naar naar huidige/volgende maand
+
+-SELECT round(SYSDATE) afronding
+	FROM dual; ---> guidige/volgende dag
+*******************************************************************************
+			GREATEST en LEAST:
+:GREATEST en LEAST: geeft grootste/kleinste waarde binnen een reeks:
+SELECT proj_nr,uren,greatest(proj_nr,uren)
+	FROM opdrachten;
+SELECT proj_nr,uren,least(proj_nr,uren)
+ 	FROM opdrachten;
+*******************************************************************************
+			DECODE:
+DECODE: Je geeft een waarde meestal een afkorting en je krijgt een waarde daarvoor,
+Als die er niet is dan krijg je een default waarden,
+Als die er niet is dan krijg je een null waarde
+SELECT sofi_nr, decode(provincie,
+'NB','Noord Brabant',
+'LI', 'Limburg') provincie
+FROM medewerkers;
+		---> Geeft sofi_nr + de mensen die in Noord Brabant en Limburg leven
+-------------------------------------------------------------------------------
+SELECT decode(provincie,
+'NB','Noord Brabant',
+'LI', 'Limburg',provincie) provincie
+FROM medewerkers;
+		--->Als je enkel bepaalde provincies decode in provincie
+		dan krijg je afkortingen voor de andere provincies.
+********************************************************************************
+				CASE:
+CASE:Werkt zoals DECODE Maar je geeft een waarde voor een provintie met 
+the 'THEN' conditie.
+SELECT sofi_nr, CASE
+WHEN provincie='NB' THEN 'Noord Brabant'
+WHEN provincie='LI' THEN 'Limburg'
+(ELSE provincie)
+END provincie
+FROM medewerkers;
+		--->Geen 'ELSE' conditie => Null waarde
+*********************************************************************************
+				NVL:
+NVL= Null-VaLue substitution = een NULL Waarde tijdelijk een andere waarde geven
+
+SELECT sofi_nr,proj_nr,uren	SELECT sofi_nr,proj_nr,nvl(uren,0)
+FROM opdrachten;		FROM opdrachten;
+--> geeft lege waardes		---> Lege waardes hebben een 0
+------------------------------------------------------------------------------
+SELECT sofi_nr,proj_nr,		SELECT sofi_nr,proj_nr,
+uren + 4			nvl(uren,0) + 4
+FROM opdrachten;		FROM opdrachten;
+-->Geeft alle waarde + 4	---> Geeft alle waarde + 4
+ en Geeft waarde (null)		en Geeft waarde 4
+*********************************************************************************
+			COALESCE:
+COALESCE: = Laat je kiezen tussen een aantal groepen 
+
+Je wenst uit te zoeken hoe best met elke persoon contact wordt opgenomen
+volgens deze regels:
+1. Als een persoon over een zakelijk telefoonnummer beschikt, gebruik dan het
+zakelijk nummer.
+2. Als een persoon geen zakelijk nummer heeft maar wel een mobiel, gebruik dan
+het mobiel nummer.
+3. Als een persoon geen zakelijk nummer heeft en geen mobiel, maar wel een
+huistelefoon, gebruik dan het huistelefoonnummer.
+Je kan dit oplossen door het gebruik van de COALESCE functie:
+
+SELECT name,
+COALESCE (businessphone, cellphone, homephone) contact_phone
+FROM contact_info;
+---> Geeft je een kolom met de 3 titels en namen en een waarde of null
+*********************************************************************************
+			NULLIF:
+NULLIF: Vergelijkt 2 waarde met elkaar 
+-Gelijkheid = NULL
+-Ongelijkheid = 1ste parameter
+
+SELECT nullif(1234,1234)		SELECT nullif(1234,1234)
+FROM dual;				FROM dual; 
+--> Geeft niets terug			---> Geeft 1234 terug
+*********************************************************************************
+				REPLACE:
+REPLACE: 3 parameters
+‘char’ is de karakterstring die wordt onderzocht. Numerieke
+en datum constanten worden eerst geëvalueerd daarna
+geconverteerd.
+2. ‘search_string’ is de karaktercombinatie die men zoekt in de
+‘char’ karakterstring. Als de ‘search_string’ niet gevonden
+wordt blijft ‘char’ onveranderd.
+3. ‘replacement_string’ is de karaktercombinatie waardoor
+‘search string ‘ vervangen wordt. Ontbreekt de parameter
+‘replacement_string’, dan wordt de search string vervangen
+door niets.
+
+SELECT REPLACE( 'ab*cd*ef*','*','°') "voorbeeld1 replace"
+FROM dual;
+---> ab°cd°ef° de '*' wordt door '°' vervangen
+
+SELECT REPLACE( 'ab*cd*ef*','*') "voorbeeld2 replace"
+FROM dual;
+---> abcdef de '*' wordt door spaties vervangen
+
+SELECT REPLACE( 1000-1,'9','55') "voorbeeld3 replace"
+FROM dual;
+----> 55555 
+********************************************************************************
+			Conversiefuncties:
+-converteren impliciet =datum impliciet geconverteerd naar karakterstring door
+LENGTH functie met karakterstrings
+-converteren expliciet =
+•TO_CHAR converteert numerieke en datumgegevens -> karakterstrings
+SELECT to_char(SYSDATE,'Month')
+||' is een speciale maand' 
+FROM dual;			--->Datum naar text met extra spatie tussen
+
+SELECT to_char(SYSDATE,'fmMonth')
+||' is een speciale maand' Voorbeeld
+FROM dual; 			---> De fm haalt de spatie daartussen weg 
+-SELECT to_char(SYSDATE,'ddTH-mon-yyyy"
+uur:"hh24mmss') datum_uur
+FROM dual;
+
+SELECT to_char(SYSDATE,'ddSP-mon-yyyy"
+uur:"hh24mmss') datum_uur
+FROM dual;
+
+SELECT to_char(SYSDATE,'ddSPTH-mon-yyyy"
+uur:"hh24mmss') datum_uur
+FROM dual;
+			--->andere formaten De TH en SP suffixes voor telwoorden
+-------------------------------------------------------------------------------
+SELECT to_char(000001,'99999')
+||' is een speciaal getal' voorbeeld
+FROM dual;
+1 is een speciaal getal ( alle voorgaande '0' worden weggelaten 
+en maximaal 5 cijfers 
+
+• TO_NUMBER converteertkarakterstring expliciet -> getal
+• TO_DATE converteert karakterstrings -> datumgegevens.
+SELECT length(SYSDATE)
+FROM dual;
+

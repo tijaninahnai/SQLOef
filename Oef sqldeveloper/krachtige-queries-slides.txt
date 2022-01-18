@@ -1,0 +1,129 @@
+Geef sofi_nr, achternaam en salaris voor
+medewerker Bordoloi
+select voornaam, achternaam, salaris, sofi_nr
+from medewerkers
+where upper(voornaam)='BORDERLOI';
+------------------------------------------------------------------------------
+Geef sofi_nr, achternaam, voornaam en
+parkeerplaats van de medewerker met
+parkeerplaats 1.
+
+Select sofi_nr, voornaam, achternaam
+from medewerkers
+where parkeerplaats=1;
+------------------------------------------------------------------------------
+Geef sofi_nr, achternaam, voornaam en
+geboortedatum van medewerkers met
+geboortedatum 20 juni 1981.
+
+select sofi_nr, achternaam, voornaam, geb_datum
+from medewerkers 
+where geb_datum=('20-jun-1981');
+------------------------------------------------------------------------------
+		KRACHTIGE QUERIES:
+
+Geef sofi_nr, achternaam, voornaam en salaris
+van medewerkers met een salaris tussen 30000
+en 40000 (beide inbegrepen).
+
+select sofi_nr, achternaam, voornaam, salaris
+from medewerkers 
+where salaris between 30000 and 40000;
+-------------------------------------------------------------------------------
+Geef sofi_nr, achternaam, voornaam van
+medewerkers met beginletter van familienaam
+tussen A en J.
+
+select sofi_nr, achternaam, voornaam
+from medewerkers
+where uper(achternaam) between 'A' and 'K'; ALTIJD TUSSEN DE BEGIN LETTER EN DE VOLGENDE LETTER
+------------------------------------------------------------------------------
+Geef sofi_nr, achternaam, voornaam en
+geboortedatum voor medewerkers geboren in de
+eighties.
+
+select sofi_nr, achternaam, voornaam, geb_datum
+from medewerkers
+where geb_datum between '1-Jan-1980' and '31-Dec-1989'; ALTIJD STOPPEN WAAR NODIG
+------------------------------------------------------------------------------
+			LIKE
+Geef sofi_nr, achternaam, voornaam van
+medewerkers met een ‘r’ in hun
+achternaam
+
+SELECT sofi_nr, achternaam, voornaam
+FROM medewerkers
+WHERE lower(achternaam) LIKE '%r%';
+------------------------------------------------------------------------------
+Geef sofi_nr, achternaam, voornaam van
+medewerkers waarvan de 3e letter van hun
+achternaam een ‘r’
+
+SELECT sofi_nr, achternaam, voornaam
+FROM medewerkers
+where lower(achternaam) LIKE '__r%';
+------------------------------------------------------------------------------
+Welke medewerkers werken in afdeling 3 en
+hebben een salaris boven 30.000
+
+SELECT sofi_nr, achternaam, voornaam, salaris
+FROM medewerkers
+where afd_nr=3 and salaris>30000
+------------------------------------------------------------------------------
+Welke medewerkers werken in afdeling 3 of
+hebben een salaris boven 30.000
+
+SELECT sofi_nr, achternaam, voornaam, salaris
+FROM medewerkers
+where afd_nr=3 or salaris>30000
+------------------------------------------------------------------------------
+Welke medewerkers hebben een salaris hoger
+dan 30.000 en werken in afdeling 1 of 3?
+
+SELECT sofi_nr, achternaam, voornaam, salaris
+FROM medewerkers
+where salaris>30000 and (afd_nr=1 or afd_nr=3); MOEt met haakjes voor beide condities 
+------------------------------------------------------------------------------
+Geef sofi_nr, achternaam, voornaam en salaris
+van medewerkers waarvan het salaris 25000,
+30000 of 43000 is
+
+SELECT sofi_nr, achternaam, voornaam, salaris
+FROM medewerkers
+where salaris in(25000,30000,43000);
+--------------------------------------------------------------------------------
+Geef sofi_nr, achternaam, voornaam en salaris
+van medewerkers die Suzan of Martina heten
+
+SELECT sofi_nr, achternaam, voornaam, salaris
+FROM medewerkers
+where upper(voornaam) in ('SUZAN','MARTINA'):
+--------------------------------------------------------------------------------
+Geef sofi_nr, achternaam, voornaam en
+geboorte-datum van medewerkers die geboren
+zijn op 10 november 1977 of 1 september 1965
+
+SELECT sofi_nr, achternaam, voornaam, geb_datum
+from medewerkers
+where geb_datum in ('10-nov-1977','1-sep-1965');
+------------------------------------------------------------------------------
+Voor welke opdrachten zijn de uren (niet)
+ingevuld?
+
+SELECT * 
+FROM opdrachten 
+WHERE uren (is null) is not null;
+------------------------------------------------------------------------------
+Welke medewerkers hebben geen manager?
+
+SELECT sofi_nr, voornaam, achternaam,mgr_sofi_nr
+FROM medewerkers
+WHERE mgr_sofi_nr is null;
+--------------------------------------------------------------------------------
+Welke medewerkers hebben een manager?
+Geef de achternaam in hoofdletters.
+
+SELECT voornaam, upper(achternaam), sofi_nr, mgr_sofi_nr
+FROM medewerkers
+WHERE mgr_sofi_nr is not null;
+------------------------------------------------------------------------------

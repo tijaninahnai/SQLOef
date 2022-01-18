@@ -1,0 +1,24 @@
+select proj_naam
+from projecten
+where regexp_like(proj_naam,'^[aeioi]*[aeiou][^aeiou][aeiou]');
+
+select proj_naam
+from projecten
+where regrexp_instr(proj_naam,'[aeiou]',1,1,0,'i') +2 =
+regrexp_instr(proj_naam,'[aeiou]',1,2,0,'i');
+insert into projecten
+values (98,'inisiatief',Pothoek,3);
+
+
+--5
+select regexp_substr(proj_naam, '[aeiou]',1,2,'i') "Tweede klinker"
+from projecten;
+--5b
+
+select proj_naam
+from projecten
+where regexp_substr(proj_naam, '[aeiou]',1,1,'i') = 
+regexp_substr(proj_naam,'[aeiou]',1,2,'i');
+
+
+

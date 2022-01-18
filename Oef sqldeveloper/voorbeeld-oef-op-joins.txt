@@ -1,0 +1,57 @@
+stel dat we de Sofi_nr achternaam voornaam afd_nr afd_naam zoeken
+
+select sofi_nr, achternaam, voornaam, m.afd_nr,afd_naam
+from medewerkers m
+join afdelingen a on(m.afd_nr=a.afd_nr);
+
+OF
+
+SELECT sofi_nr,achternaam,voornaam, medewerkers.afd_nr,afd_naam
+FROM medewerkers
+JOIN afdelingen on (medewerkers.afd_nr=afdelingen.afd_nr);
+
+OF
+
+select sofi_nr,achternaam,voornaam, afd_nr,afd_naam
+from medewerkers
+join afdelingen  using(afd_nr);
+
+SELECT sofi_nr,achternaam, voornaam,m.afd_nr,afd_naam
+FROM medewerkers m
+JOIN afdelingen a ON (m.afd_nr=a.afd_nr)
+where upper(geslacht)='V';
+
+OF
+
+SELECT sofi_nr,achternaam,voornaam,afd_nr,afd_naam
+FROM medewerkers 
+JOIN afdelingen using (afd_nr)
+where upper(geslacht)='V'
+
+SELECT sofi_nr, achternaam,voornaam, m.afd_nr,afd_naam
+FROM medewerkers m
+JOIN afdeling a on(m.afd_nr=a.afd_nr)
+where upper(afd_naam)='PRODUCTIE';
+
+OF
+
+SELECT sofi_nr,achternaam, voornaam, afd_nr,afd_naam
+FROM medewerkers 
+JOIN afdelingen USING (afd_nr)
+where upper(afd_naam='PRODUCTIE';
+
+Geef voor medewerkers die aan projecten meewerkten:
+Sofi_nr achternaam proj_naam proj_nr opd_uren
+
+SELECT m.sofi_nr,achternaam,p.proj_naam,proj_nr,uren opd_uren
+FROM medewerkers m
+JOIN opdrachten o on (m.sofi_nr=o.sofi_nr)
+JOIN porjecten p on (o.proj_naam=p.proj_naam);
+
+Geef voor medewerkers die aan projecten meewerkten :
+Sofi_nr achternaam proj_nr proj_naam
+SELECT m.Sofi_nr, achternaam, o.proj_nr,proj_naam
+FROM medewerkers m
+JOIN opdrachten o ON (m.sofi_nr=o.sofi_nr)
+JOIN projecten p ON (o.proj_nr=p.sofi_nr);
+WHERE uren != NULL 
