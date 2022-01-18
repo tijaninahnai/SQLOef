@@ -1,0 +1,73 @@
+/*
+SELECT * FROM students WHERE email LIKE '%.com';
+*/
+
+/*
+#Selecteer personen met voor -en achternaam tussen a-n
+SELECT first_name,last_name
+From students
+WHERE LOWER(first_name) BETWEEN 'a' AND 'n'
+AND LOWER(last_name) BETWEEN 'a' AND 'n';
+*/
+
+
+/*
+#Concat function
+SELECT concat(first_name,' ',last_name) AS 'full_name'
+FROM students;
+*/
+
+/*
+#Selecteer alles van studenten order by 1 Aflopend
+
+SELECT *
+FROM students
+ORDER BY 1 DESC;
+*/
+/*
+#CASE
+
+SELECT average, 
+CASE WHEN average > 10 then 'passed'
+ELSE 'not passed'
+END AS 'is_passed'
+FROM students;
+*/
+/*
+#COALESCE = heeft die persoon een voornaam of een achternaam dan zet je die bij naam, geen van beide krijgt waarde 'unknown'
+
+SELECT COALESCE(first_name,last_name,'unknown') AS name
+FROM students;
+*/
+
+/*
+#COUNT aantal 
+*/
+/*
+#DISTINCT unieke naam , wordt enkel 1x geteld 
+*/
+
+
+
+UPDATE students SET average = 10 
+WHERE average = 9;
+
+UPDATE students SET email = concat(first_name,'.', last_name,'@student.kdg.be')
+WHERE email NOT LIKE '%.kdg%';
+
+DELETE FROM students WHERE average >20;
+
+/*
+#PROBEER ENKELE SELECT QUERIES UIT
+*/	
+/*
+#PROBEER ENKELE UPDATES QUERIES UIT
+*/	
+/*
+#PROBEER ENKELE DELETES QUERIES UIT
+*/	
+/*
+#PROBEER ENKELE INSERTS QUERIES UIT
+*/	
+
+
